@@ -19,22 +19,51 @@
             </div>
             <div class="form-group">
                 <label asp-for="HuntName" class="control-label"></label>
-                <input asp-for="HuntName" class="form-control" />
+               @* code ensures you can only able to edit pending or active hunts *@
+                @if (Model.StartDate > DateTime.Now || Model.EndDate > DateTime.Now)
+                {
+                    <input asp-for="HuntName" class="form-control" />
+                }
+                else if (Model.StartDate < DateTime.Now && Model.EndDate < DateTime.Now)
+                {
+                    <input readonly asp-for="HuntName" class="form-control" />
+                }
                 <span asp-validation-for="HuntName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Theme" class="control-label"></label>
-                <input asp-for="Theme" class="form-control" />
+                @if (Model.StartDate > DateTime.Now || Model.EndDate > DateTime.Now)
+                {
+                    <input asp-for="Theme" class="form-control" />
+                }
+                else if (Model.StartDate < DateTime.Now && Model.EndDate < DateTime.Now)
+                {
+                    <input readonly asp-for="Theme" class="form-control" />
+                }
                 <span asp-validation-for="Theme" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
+                @if (Model.StartDate > DateTime.Now || Model.EndDate > DateTime.Now)
+                {
+                    <input asp-for="StartDate" class="form-control" />
+                }
+                else if (Model.StartDate < DateTime.Now && Model.EndDate < DateTime.Now)
+                {
+                    <input readonly asp-for="StartDate" class="form-control" />
+                }
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
+                @if (Model.StartDate > DateTime.Now || Model.EndDate > DateTime.Now)
+                {
+                    <input asp-for="EndDate" class="form-control" />
+                }
+                else if (Model.StartDate < DateTime.Now && Model.EndDate < DateTime.Now)
+                {
+                    <input readonly asp-for="EndDate" class="form-control" />
+                }
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
