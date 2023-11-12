@@ -141,6 +141,14 @@ namespace ScavengeRUs.Controllers
             return View();
             
         }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Gather([Bind(Prefix ="Id")]int huntId)
+        {
+            var hunt = await _huntRepo.ReadAsync(huntId);
+            ViewData["Hunt"] = hunt;
+            return View(hunt.Players);
+        }
         /// <summary>
         /// www.localhost.com/hunt/addplayertohunt{huntid} Post method for the form submission. This creates a user and assigns the access code for the hunt. 
         /// </summary>
