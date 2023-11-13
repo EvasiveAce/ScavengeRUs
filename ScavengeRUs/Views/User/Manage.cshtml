@@ -38,6 +38,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Hunt)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccessCode)
+            </th>
              <th>
                 @Html.DisplayNameFor(model => model.Carrier)
             </th>          
@@ -48,7 +51,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(model => item.Email)
+                    @Html.DisplayFor(model => item.Email)
             </td>
             <td>
                     @Html.DisplayFor(model => item.FirstName) @Html.DisplayFor(model => item.LastName)
@@ -61,15 +64,18 @@
                 {
                     @Html.DisplayFor(model => @role)                      
                 }
-                
-
             </td>
             <td>
                 @if (item.Hunt != null)
                 {
                     @Html.DisplayFor(model => item.Hunt.HuntName)
+                }                    
+            </td>
+            <td>
+                @if (item.AccessCode != null)
+                {
+                    @Html.DisplayFor(model => item.AccessCode)
                 }
-                    
             </td>
             <td>
                 @if (item.Carrier != null)

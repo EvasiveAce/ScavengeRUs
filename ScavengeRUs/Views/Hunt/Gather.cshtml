@@ -1,0 +1,28 @@
+﻿@model IEnumerable<ScavengeRUs.Models.Entities.ApplicationUser>
+
+@{
+    var hunt = (Hunt?)ViewData["Hunt"];
+    ViewData["Title"] = "Gather Player Phone Numbers";
+}
+
+<!-- Gather phone numbers of all players in the hunt for later use (likely text notifications) -->
+@{
+    string[] phoneNumbers = new string[Model.Count()];
+    int counter = 0;
+}
+@foreach (var item in Model)
+{
+    phoneNumbers[counter++] = item.PhoneNumber;
+}
+
+<!-- The Foreach Loop does not like being the last action in the page, will not loop without something else here -->
+@{
+    string doneGathering = "Done";
+}
+
+<hr />
+
+<!-- Placeholder text for anything we may want here -->
+<p>
+    Phone numbers have been gathered.
+</p>

@@ -4,14 +4,23 @@
     ViewData["Title"] = "Hunts";
 }
 
-<h1>Displaying all hunts</h1>
+<h1>Hunt Display</h1>
+
 
 <p>
     <a asp-action="Create" style="padding-right: 3px">Create New Hunt</a> |
     <a asp-controller="locations" asp-action="Index" style="padding-right: 3px">Manage All Tasks</a> |
     <a asp-controller="User" asp-action="Manage" style="padding-left: 3px">Back to Admin Portal</a>
 </p>
-<table class="table">
+
+<p>
+    <button id="All">All</button>
+    <button id="Active">Active</button>
+    <button id="Pending">Pending</button>
+    <button id="Ended">Ended</button>
+</p>
+
+<table class="table" id="huntTable">
     <thead>
         <tr>
 @*            <th>
@@ -30,7 +39,7 @@
                 @Html.DisplayNameFor(model => model.EndDate)
             </th>
             <th>
-                Time Remaining
+                Status
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Players)
@@ -61,15 +70,23 @@
             </td>
             <td>
                     @{
+                        // see the commented code below to see why this var is set up this way, even though you don't necessarily need it this way in this version of the project
                         var timeRemaining = (item.EndDate - DateTime.Now).ToString();
-                        if (TimeSpan.Parse(timeRemaining).Seconds<0)
+                        if (item.StartDate < DateTime.Now || item.EndDate < DateTime.Now)
                         {
                             timeRemaining = "Ended";
                         }
-                        else
+                        if (item.StartDate > DateTime.Now)
                         {
-                            timeRemaining = timeRemaining.Substring(0, timeRemaining.LastIndexOf("."));
+                            timeRemaining = "Pending";
                         }
+                        if (item.EndDate > DateTime.Now && item.StartDate < DateTime.Now)
+                        {
+                            timeRemaining = "Active";
+                            // below would display the time remaining, but we are choosing to not use it.
+                            // timeRemaining = timeRemaining.Substring(0, timeRemaining.LastIndexOf("."));
+                        }
+ 
                 }
                     @Html.DisplayFor(modelItem => timeRemaining)
             </td>
@@ -80,11 +97,20 @@
                 @Html.DisplayFor(modelItem => item.HuntLocations.Count)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Update", new { id=item.Id }) |
-                @Html.ActionLink("View Hunt", "ViewTasks", new {  id=item.Id  }) |
+ @*                the edit link will only be active for pending or active hunts (the url to edit ended hunts does still exist, but all fields are read-only) *@
+                    @if (item.StartDate > DateTime.Now || item.EndDate > DateTime.Now)
+                    {
+                        @Html.ActionLink("Edit", "Update", new      { id=item.Id })
+                        <nobr>|</nobr>
+                    }
+                    @Html.ActionLink("View Hunt", "ViewTasks", new {  id=item.Id  }) |
                 @Html.ActionLink("Delete Hunt", "Delete", new {  id=item.Id  })
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@section Scripts{
+    <script src="~/js/huntIndex.js"></script>
+}
