@@ -141,7 +141,11 @@ namespace ScavengeRUs.Controllers
             return View();
             
         }
-
+        /// <summary>
+        /// www.localhost.com/hunt/gather/{huntid} Method for gathering phone numbers of players in a hunt into an array.
+        /// </summary>
+        /// <param name="huntId">The ID number of the currently-viewed hunt.</param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Gather([Bind(Prefix ="Id")]int huntId)
         {
