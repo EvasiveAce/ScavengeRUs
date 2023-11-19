@@ -235,13 +235,15 @@ namespace ScavengeRUs.Controllers
 
         }
         /// <summary>
-        /// This method generates a view of all task associated with a hunt. Pasing the huntid
+        /// www.localhost.com/hunt/ViewTasks/{huntId}-{huntName} This method generates a page for a specific hunt with a unique
+        /// URL for players to identify.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="huntid"></param>
-        /// <returns></returns>
+        /// <param name="huntid">The ID associated with the hunt selected by user.</param>
+        /// <param name="huntname">The name of the hunt selected by user.</param>
+        /// <returns>A page for the specified hunt with unique URL.</returns>
         [Authorize(Roles = "Player, Admin")]
-        public async Task<IActionResult> ViewTasks([Bind(Prefix ="Id")]int huntid)
+        [Route("Home/ViewTasks/{id}" + "-" + "{huntname}")]
+        public async Task<IActionResult> ViewTasks([Bind(Prefix ="Id")]int huntid, string huntname)
         {
             var currentUser = await _userRepo.ReadAsync(User.Identity?.Name!);
             var hunt = await _huntRepo.ReadHuntWithRelatedData(huntid);
