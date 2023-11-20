@@ -129,6 +129,23 @@ namespace ScavengeRUs.Controllers
             return View(hunt.Players);
         }
         /// <summary>
+        /// www.localhost.com/hunt/addplayerfromlist{huntid} Get method for adding a player to a hunt via a list of players and excluding the admin accounts
+        /// </summary>
+        /// <param name="huntId"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddPlayerFromList(int huntId)
+        {
+            var users = await _userRepo.ReadAllAsync(); //Reads all the users in the db
+            var hunt = await _huntRepo.ReadAsync(huntId);
+
+            //var playersAdded = users.ToList();
+            //var playersNotAdded = users.Except(playersAdded);
+            ViewData["Hunt"] = hunt;
+            return View(users);
+
+        }
+        /// <summary>
         /// www.localhost.com/hunt/addplayertohunt{huntid} Get method for adding a player to a hunt. 
         /// </summary>
         /// <param name="huntId"></param>
@@ -161,7 +178,7 @@ namespace ScavengeRUs.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> AddPlayerToHunt([Bind(Prefix = "Id")] int huntId ,ApplicationUser user)
+        public async Task<IActionResult> AddPlayerToHunt(int huntId ,ApplicationUser user)
         {
 
             if (huntId == 0)
@@ -303,19 +320,6 @@ namespace ScavengeRUs.Controllers
             return RedirectToAction("ManageTasks", new {id=huntid});
         }
         /// <summary>
-        /// This is the get method for removing a task from a hunt. This is executed when clicking "Remove" from the Hunt/ViewTasks screen
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="huntid"></param>
-        /// <returns></returns>
-        //public async Task<IActionResult> RemoveTasks(int id, int huntid)
-        //{
-        //    var hunt = await _huntRepo.ReadAsync(huntid);
-        //    ViewData["Hunt"] = hunt;
-        //    var task = await _huntRepo.ReadLocation(id);
-        //    return View(task);
-        //}
-        /// <summary>
         /// This is the post method for removing a task. This is executed when you click "Remove" from the Hunt/RemoveTask screen
         /// </summary>
         /// <param name="id"></param>
@@ -325,6 +329,20 @@ namespace ScavengeRUs.Controllers
         {
             await _huntRepo.RemoveTaskFromHunt(id, huntid);
             return RedirectToAction("ManageTasks", "Hunt", new {id=huntid});
+        }
+
+        public async Task<IActionResult> AddPlayer(ApplicationUser user, int huntid)
+        {
+            var hunt = await _huntRepo.ReadHuntWithRelatedData(huntid);
+            await _userRepo.AddUserToHunt(user.UserName, hunt);
+            ViewData["Hunt"] = hunt;
+            return RedirectToAction("AddPlayerFromList", new { id = huntid });
+        }
+
+        public async Task<IActionResult> RemovePlayer(ApplicationUser user, int huntid)
+        {
+            await _huntRepo.RemoveUserFromHunt(user.Id, huntid);
+            return RedirectToAction("AddPlayerFromList", "Hunt", new { id = huntid });
         }
 
         [Authorize(Roles = "Admin")]
