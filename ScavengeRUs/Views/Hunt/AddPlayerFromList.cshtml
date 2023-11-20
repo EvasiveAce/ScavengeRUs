@@ -105,17 +105,17 @@
                     }
                 </td>
                 <td>
-                    @* @{
-                        var playerAdded = hunt.HuntLocations.FirstOrDefault(a => a.HuntId == item.Id);
+                    @{
+                            var playerAdded = hunt.Players.Any(p => p.UserName == item.UserName);
                     }
-                    @if (playerAdded != null)
+                    @if (playerAdded)
                     {
-                        @Html.ActionLink("Remove", "RemovePlayer", new { id=item.Id,huntid=hunt.Id  }, new { @style = "color:red;"})
+                        @Html.ActionLink("Remove", "RemoveUser", new { id=item.UserName,huntid=hunt.Id  }, new { @style = "color:red;"})
                     }
                     else
-                    { *@
-                        @Html.ActionLink("Add", "AddPlayer", new { id=item.UserName, huntId=hunt.Id } )
-                    @* } *@
+                    { 
+                        @Html.ActionLink("Add", "AddUser", new { id=item.UserName, huntId=hunt.Id } )
+                     }
                 </td>
             </tr>
             }

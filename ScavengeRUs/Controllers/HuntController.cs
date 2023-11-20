@@ -143,14 +143,12 @@ namespace ScavengeRUs.Controllers
         public async Task<IActionResult> AddPlayerFromList([Bind(Prefix = "Id")] int huntId)
         {
             var users = await _userRepo.ReadAllAsync(); //Reads all the users in the db
-            var hunt = await _huntRepo.ReadHuntWithRelatedData(huntId);
+            var hunt = await _huntRepo.ReadAsync(huntId);
             ViewData["Hunt"] = hunt;
             if (hunt == null)
             {
                 return RedirectToAction("Index");
             }
-            //var playersAdded = users.ToList();
-            //var playersNotAdded = users.Except(playersAdded);
             return View(users);
 
         }
@@ -257,8 +255,26 @@ namespace ScavengeRUs.Controllers
         public async Task<IActionResult> RemoveUserConfirmed(string username, int huntid)
         {
             await _huntRepo.RemoveUserFromHunt(username, huntid);
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewPlayers", new { id = huntid });
 
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddUser([Bind(Prefix = "Id")] string username, [Bind(Prefix = "huntId")] int huntid)
+        {
+            ViewData["Hunt"] = huntid;
+            var user = await _userRepo.ReadAsync(username);
+            return View(user);
+
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> AddUserConfirmed(string username, int huntid)
+        {
+            var user = await _userRepo.ReadAsync(username);
+            await _huntRepo.AddUserToHunt(huntid, user);
+            return RedirectToAction("ViewPlayers", new { id = huntid });
         }
         /// <summary>
         /// www.localhost.com/hunt/ViewTasks/{huntId}-{huntName} This method generates a page for a specific hunt with a unique
@@ -338,21 +354,6 @@ namespace ScavengeRUs.Controllers
         {
             await _huntRepo.RemoveTaskFromHunt(id, huntid);
             return RedirectToAction("ManageTasks", "Hunt", new {id=huntid});
-        }
-
-        public async Task<IActionResult> AddPlayer([Bind(Prefix = "Id")] string username, [Bind(Prefix = "huntId")] int huntid)
-        {
-            
-            var hunt = await _huntRepo.ReadHuntWithRelatedData(huntid);
-            ViewData["Hunt"] = hunt;
-            await _userRepo.AddUserToHunt(username, hunt);
-            return RedirectToAction("AddPlayerFromList", new { id = huntid });
-        }
-
-        public async Task<IActionResult> RemovePlayer(ApplicationUser user, int huntid)
-        {
-            await _huntRepo.RemoveUserFromHunt(user.Id, huntid);
-            return RedirectToAction("AddPlayerFromList", "Hunt", new { id = huntid });
         }
 
         [Authorize(Roles = "Admin")]
