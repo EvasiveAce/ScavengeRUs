@@ -171,7 +171,7 @@ namespace ScavengeRUs.Services
         public async Task AddUserToHunt(string username, Hunt hunt)
         {
             var user = await ReadAsync(username);
-            if (user != null)
+            if (user != null && hunt != null)
             {
                 user.Hunt = hunt;
                 var accessCode = new AccessCode()

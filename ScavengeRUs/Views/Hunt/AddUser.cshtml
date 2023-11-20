@@ -1,12 +1,12 @@
 ﻿@model ScavengeRUs.Models.Entities.ApplicationUser
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Add";
 }
 
 
 
-<h3>Are you sure you want to remove this user from this hunt?</h3>
+<h3>Are you sure you want to add this user to this hunt?</h3>
 <div>
     <hr />
     <dl class="row">
@@ -28,11 +28,18 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AccessCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AccessCode.Code)
+        </dd>
+
 
     </dl>
 
-    <form asp-action="RemoveUserConfirmed">
-        <input type="submit" value="Remove" class="btn btn-danger" /> |
+    <form asp-action="AddUserConfirmed">
+        <input type="submit" value="Add" class="btn btn-danger" /> |
         <input type="hidden" name="username" value="@Model.UserName"  />
         <input type="hidden" name="huntId" value="@ViewData["Hunt"]" />
         <a asp-action="AddPlayerFromList" asp-route-Id="@ViewData["Hunt"]">Back to Active Users</a>

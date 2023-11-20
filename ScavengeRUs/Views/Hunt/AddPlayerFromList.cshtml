@@ -1,0 +1,124 @@
+﻿@model IEnumerable<ScavengeRUs.Models.Entities.ApplicationUser>
+
+@{
+    var hunt = (Hunt?)ViewData["Hunt"];
+    ViewData["Title"] = "Add Player";
+    string? roles = null;
+}
+
+<h1>Add player to @hunt.HuntName</h1>
+
+<p>
+    <a asp-action="AddPlayerToHunt" style="padding-left: 3px">Create New User</a> |
+    <a asp-action="CreateUsers" style="padding-left: 3px">Batch Create Users</a> |
+    <a asp-area="" asp-controller="Hunt" asp-action="ViewPlayers" asp-route-Id="@hunt.Id" style="padding-right: 3px">Back To Active User List</a>
+</p>
+
+@* <form asp-controller="User" asp-action="Manage">
+    <p>
+        Search: <input type="text" name="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form> *@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Roles)
+            </th>
+@*             <th>
+                @Html.DisplayNameFor(model => model.Hunt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccessCode)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.Carrier)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+         @if (!Model.Any())
+        {
+            <tr>
+                <td>
+                    <span> No players are assigned to this hunt</span>
+                </td>
+                <td>
+                </td>                
+                <td>
+                </td>                
+                <td>
+                </td>                
+                <td>
+                </td>
+            </tr>
+        }
+        @foreach (var item in Model)
+        {
+            @if (item.Roles.Contains("Player"))
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.FirstName) @Html.DisplayFor(model => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.PhoneNumber)
+                </td>
+                <td>
+                    @foreach (var role in item.Roles)
+                        {
+                            @Html.DisplayFor(model => @role)
+                        }
+                    
+                </td>
+ @*                <td>
+                    @if (item.Hunt != null)
+                    {
+                        @Html.DisplayFor(model => item.Hunt.HuntName)
+                    }
+                </td>
+                <td>
+                    @if (item.AccessCode != null)
+                    {
+                        @Html.DisplayFor(model => item.AccessCode)
+                    }
+                </td> *@
+                <td>
+                    @if (item.Carrier != null)
+                    {
+                        @Html.DisplayFor(model => item.Carrier)
+                    }
+                </td>
+                <td>
+                    @{
+                            var playerAdded = hunt.Players.Any(p => p.UserName == item.UserName);
+                    }
+                    @if (playerAdded)
+                    {
+                        @Html.ActionLink("Remove", "RemoveUser", new { id=item.UserName,huntid=hunt.Id  }, new { @style = "color:red;"})
+                    }
+                    else
+                    { 
+                        @Html.ActionLink("Add", "AddUser", new { id=item.UserName, huntId=hunt.Id } )
+                     }
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>

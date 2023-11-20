@@ -52,6 +52,12 @@ namespace ScavengeRUs.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Hunt hunt)
         {
+            if (hunt.EndDate <= hunt.StartDate)
+            {
+                ModelState.AddModelError(
+                    "EndDate",
+                    "The end date cannot be before the start date.");
+            }
             if (ModelState.IsValid)
             {
                 hunt.CreationDate = DateTime.Now;
@@ -129,6 +135,24 @@ namespace ScavengeRUs.Controllers
             return View(hunt.Players);
         }
         /// <summary>
+        /// www.localhost.com/hunt/addplayerfromlist{huntid} Get method for adding a player to a hunt via a list of players and excluding the admin accounts
+        /// </summary>
+        /// <param name="huntId"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddPlayerFromList([Bind(Prefix = "Id")] int huntId)
+        {
+            var users = await _userRepo.ReadAllAsync(); //Reads all the users in the db
+            var hunt = await _huntRepo.ReadAsync(huntId);
+            ViewData["Hunt"] = hunt;
+            if (hunt == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(users);
+
+        }
+        /// <summary>
         /// www.localhost.com/hunt/addplayertohunt{huntid} Get method for adding a player to a hunt. 
         /// </summary>
         /// <param name="huntId"></param>
@@ -141,7 +165,11 @@ namespace ScavengeRUs.Controllers
             return View();
             
         }
-
+        /// <summary>
+        /// www.localhost.com/hunt/gather/{huntid} Method for gathering phone numbers of players in a hunt into an array.
+        /// </summary>
+        /// <param name="huntId">The ID number of the currently-viewed hunt.</param>
+        /// <returns></returns>
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Gather([Bind(Prefix ="Id")]int huntId)
         {
@@ -157,7 +185,7 @@ namespace ScavengeRUs.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> AddPlayerToHunt([Bind(Prefix = "Id")] int huntId ,ApplicationUser user)
+        public async Task<IActionResult> AddPlayerToHunt(int huntId ,ApplicationUser user)
         {
 
             if (huntId == 0)
@@ -227,17 +255,37 @@ namespace ScavengeRUs.Controllers
         public async Task<IActionResult> RemoveUserConfirmed(string username, int huntid)
         {
             await _huntRepo.RemoveUserFromHunt(username, huntid);
-            return RedirectToAction("Index");
+            return RedirectToAction("ViewPlayers", new { id = huntid });
 
         }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AddUser([Bind(Prefix = "Id")] string username, [Bind(Prefix = "huntId")] int huntid)
+        {
+            ViewData["Hunt"] = huntid;
+            var user = await _userRepo.ReadAsync(username);
+            return View(user);
+
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> AddUserConfirmed(string username, int huntid)
+        {
+            var user = await _userRepo.ReadAsync(username);
+            await _huntRepo.AddUserToHunt(huntid, user);
+            return RedirectToAction("ViewPlayers", new { id = huntid });
+        }
         /// <summary>
-        /// This method generates a view of all task associated with a hunt. Pasing the huntid
+        /// www.localhost.com/hunt/ViewTasks/{huntId}-{huntName} This method generates a page for a specific hunt with a unique
+        /// URL for players to identify.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="huntid"></param>
-        /// <returns></returns>
+        /// <param name="huntid">The ID associated with the hunt selected by user.</param>
+        /// <param name="huntname">The name of the hunt selected by user.</param>
+        /// <returns>A page for the specified hunt with unique URL.</returns>
         [Authorize(Roles = "Player, Admin")]
-        public async Task<IActionResult> ViewTasks([Bind(Prefix ="Id")]int huntid)
+        [Route("Home/ViewTasks/{id}" + "-" + "{huntname}")]
+        public async Task<IActionResult> ViewTasks([Bind(Prefix ="Id")]int huntid, string huntname)
         {
             var currentUser = await _userRepo.ReadAsync(User.Identity?.Name!);
             var hunt = await _huntRepo.ReadHuntWithRelatedData(huntid);
@@ -296,19 +344,6 @@ namespace ScavengeRUs.Controllers
             await _huntRepo.AddLocation(id, huntid);
             return RedirectToAction("ManageTasks", new {id=huntid});
         }
-        /// <summary>
-        /// This is the get method for removing a task from a hunt. This is executed when clicking "Remove" from the Hunt/ViewTasks screen
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="huntid"></param>
-        /// <returns></returns>
-        //public async Task<IActionResult> RemoveTasks(int id, int huntid)
-        //{
-        //    var hunt = await _huntRepo.ReadAsync(huntid);
-        //    ViewData["Hunt"] = hunt;
-        //    var task = await _huntRepo.ReadLocation(id);
-        //    return View(task);
-        //}
         /// <summary>
         /// This is the post method for removing a task. This is executed when you click "Remove" from the Hunt/RemoveTask screen
         /// </summary>

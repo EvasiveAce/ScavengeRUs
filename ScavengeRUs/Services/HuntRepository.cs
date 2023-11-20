@@ -192,10 +192,10 @@ namespace ScavengeRUs.Services
         public async Task RemoveUserFromHunt(string username, int huntId)
         {
             var user = await _userRepo.ReadAsync(username);
-            var hunt = await ReadAsync(huntId);
+            Hunt hunt = await ReadAsync(huntId);
             if (user != null && hunt != null)
             {
-                user.Hunt = null;
+                user.Hunt = hunt;
                 
                 hunt.Players.Remove(user);
                 await _db.SaveChangesAsync();

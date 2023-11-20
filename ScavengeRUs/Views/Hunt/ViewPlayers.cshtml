@@ -8,8 +8,8 @@
 <h1>Active Users of @hunt.HuntName</h1>
 
 <p>
-    <a asp-action="ViewTasks" asp-route-Id="@hunt.Id" style="padding-left: 3px">Back to hunt</a> |
-    <a asp-action="AddPlayerToHunt" asp-route-Id="@hunt.Id" style="padding-right: 3px">Add a user to this Hunt</a> |
+    <a asp-controller="Home" asp-action="ViewTasks" asp-route-Id="@hunt.Id-@hunt.HuntName" style="padding-left: 3px">Back to hunt</a> |
+    <a asp-action="AddPlayerFromList" asp-route-Id="@hunt.Id" style="padding-right: 3px">Add a user to this Hunt</a> |
     <a asp-action="Gather" asp-route-Id="@hunt.Id" style="padding-right: 3px">Gather player phone numbers</a>
 </p>
 
