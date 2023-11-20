@@ -48,7 +48,23 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>           
+    <tbody>
+         @if (!Model.Any())
+        {
+            <tr>
+                <td>
+                    <span> No players are assigned to this hunt</span>
+                </td>
+                <td>
+                </td>                
+                <td>
+                </td>                
+                <td>
+                </td>                
+                <td>
+                </td>
+            </tr>
+        }
         @foreach (var item in Model)
         {
             @if (item.Roles.Contains("Player"))
@@ -98,11 +114,11 @@
                     }
                     else
                     { *@
-                        @Html.ActionLink("Add", "AddPlayer", new { user=item.Id,huntid=hunt.Id  })
+                        @Html.ActionLink("Add", "AddPlayer", new { id=item.UserName, huntId=hunt.Id } )
                     @* } *@
                 </td>
             </tr>
-        }
+            }
         }
     </tbody>
 </table>
