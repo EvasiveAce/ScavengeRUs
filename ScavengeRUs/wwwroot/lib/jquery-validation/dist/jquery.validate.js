@@ -140,8 +140,10 @@ $.extend( $.fn, {
 	},
 
 	// https://jqueryvalidation.org/rules/
+
+	rules: { phoneNumber: { phoneUS: true } },
 	rules: function (command, argument) {
-		phoneNumber: { phoneUS: true }
+		
 		var element = this[ 0 ],
 			settings, staticRules, existingRules, data, param, filtered;
 
