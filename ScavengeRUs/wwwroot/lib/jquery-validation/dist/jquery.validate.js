@@ -140,8 +140,6 @@ $.extend( $.fn, {
 	},
 
 	// https://jqueryvalidation.org/rules/
-
-	rules: { phoneNumber: { phoneUS: true } },
 	rules: function (command, argument) {
 		
 		var element = this[ 0 ],
@@ -1392,6 +1390,12 @@ $.extend( $.validator, {
 			// If you have a problem with this implementation, report a bug against the above spec
 			// Or use custom methods to implement your own email validation
 			return this.optional( element ) || /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test( value );
+		},
+
+		phoneNumber: function (phone_number, element) {
+			phone_number = phone_number.replace(/\s+/g, "");
+			return this.optional(element) || phone_number.length > 9 &&
+				phone_number.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
 		},
 
 
