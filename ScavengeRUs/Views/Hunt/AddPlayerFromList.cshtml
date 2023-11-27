@@ -14,6 +14,12 @@
     <a asp-area="" asp-controller="Hunt" asp-action="ViewPlayers" asp-route-Id="@hunt.Id" style="padding-right: 3px">Back To Active User List</a>
 </p>
 
+<p>
+    <button id="All">All</button>
+    <button id="Add">Add</button>
+    <button id="Remove">Remove</button>
+</p>
+
 @* <form asp-controller="User" asp-action="Manage">
     <p>
         Search: <input type="text" name="SearchString" />
@@ -21,7 +27,7 @@
     </p>
 </form> *@
 
-<table class="table">
+<table class="table" id="huntTable">
     <thead>
         <tr>
             <th>
@@ -122,3 +128,8 @@
         }
     </tbody>
 </table>
+
+
+@section Scripts{
+    <script src="~/js/addPlayer.js"></script>
+}
