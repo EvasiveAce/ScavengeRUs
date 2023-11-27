@@ -1394,7 +1394,7 @@ $.extend( $.validator, {
 			return this.optional( element ) || /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test( value );
 		},
 
-		phoneNumber: function (phoneNumber, element) {
+		phoneNumber: function (value, element) {
 			phoneNumber = phoneNumber.replace(/\s+/g, "");
 			return this.optional(element) || phoneNumber.length > 9 &&
 				phoneNumber.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
