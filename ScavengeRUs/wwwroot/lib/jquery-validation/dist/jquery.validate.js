@@ -370,6 +370,7 @@ $.extend( $.validator, {
 		required: "This field is required.",
 		remote: "Please fix this field.",
 		email: "Please enter a valid email address.",
+		phoneNumber: "Please enter a valid phone number",
 		url: "Please enter a valid URL.",
 		date: "Please enter a valid date.",
 		dateISO: "Please enter a valid date (ISO).",
@@ -383,7 +384,7 @@ $.extend( $.validator, {
 		max: $.validator.format( "Please enter a value less than or equal to {0}." ),
 		min: $.validator.format( "Please enter a value greater than or equal to {0}." ),
 		step: $.validator.format("Please enter a multiple of {0}."),
-		phoneNumber: "Please enter a valid phone number",
+		
 	},
 
 	autoCreateRanges: false,
@@ -1158,6 +1159,7 @@ $.extend( $.validator, {
 	classRuleSettings: {
 		required: { required: true },
 		email: { email: true },
+		phoneNumber: {phoneUS: true},
 		url: { url: true },
 		date: { date: true },
 		dateISO: { dateISO: true },
