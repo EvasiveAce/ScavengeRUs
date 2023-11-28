@@ -2,9 +2,11 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
+
 }
 
 
+<link rel="stylesheet" href="https://jqueryvalidation.org/files/demo/site-demos.css">
 
 <div class="row justify-content-center">
     <div class="col-4">
@@ -24,9 +26,10 @@
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <div class="form-floating">
-                <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="last-name" aria-required="true" />
+                <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="phone-number" aria-required="true" />
                 <label asp-for="Input.PhoneNumber"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <div class="input-error"></div>
             </div>
             <div class="form-floating">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
@@ -51,4 +54,23 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    <script>
+        // just for the demos, avoids form submit
+        jQuery.validator.setDefaults({
+            debug: true,
+            success: "valid"
+        });
+        $("#myform").validate({
+            rules: {
+                field: {
+                    required: true,
+                    phoneUS: true
+                }
+            }
+        });
+    </script>
 }

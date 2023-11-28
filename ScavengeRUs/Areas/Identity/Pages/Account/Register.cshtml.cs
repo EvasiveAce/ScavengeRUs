@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using ScavengeRUs.Models.Entities;
+using System.Text.RegularExpressions;
+
 
 
 namespace ScavengeRUs.Areas.Identity.Pages.Account
@@ -93,6 +95,9 @@ namespace ScavengeRUs.Areas.Identity.Pages.Account
             public string LastName { get; set; } = String.Empty;
 
             [Required]
+            [Phone]
+            [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+                   ErrorMessage = "Phone number is not valid.")]
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; } = String.Empty;
 
