@@ -24,6 +24,7 @@ namespace ScavengeRUs.Models.Entities
         [Required]
         public string? LastName { get; set; }
         [Phone]
+        [Required]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
                    ErrorMessage = "Phone number is not valid.")]
         [DisplayName("Phone Number")]
