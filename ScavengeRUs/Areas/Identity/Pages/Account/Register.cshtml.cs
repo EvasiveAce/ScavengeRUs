@@ -143,6 +143,7 @@ namespace ScavengeRUs.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+                user.PhoneNumber = Input.PhoneNumber;
                 user.Carrier = Enum.Parse<Carriers>(Input.Carrier);
                 
                 var roleCheckPlayer = await _roleManager.RoleExistsAsync("Player");
