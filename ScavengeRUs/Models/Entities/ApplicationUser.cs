@@ -27,7 +27,6 @@ namespace ScavengeRUs.Models.Entities
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
                    ErrorMessage = "Phone number is not valid.")]
         [DisplayName("Phone Number")]
-        [Required(IsUnique = true)]
         override public string? PhoneNumber { get; set; }
         public AccessCode? AccessCode { get; set; }
         [DisplayName("Registered Hunt")]
