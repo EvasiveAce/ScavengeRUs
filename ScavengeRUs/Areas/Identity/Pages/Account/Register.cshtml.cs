@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using ScavengeRUs.Models.Entities;
 using System.Text.RegularExpressions;
+using ScavengeRUs.Models.Enums;
 
 
 
@@ -119,6 +120,11 @@ namespace ScavengeRUs.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+             [Required]
+            [EnumDataType(typeof(Carriers))]
+            [Display(Name = "Carrier")]
+            public string Carrier { get; set; } = String.Empty;
         }
 
 
@@ -137,6 +143,7 @@ namespace ScavengeRUs.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+                user.Carrier = Enum.Parse<Carriers>(Input.Carrier);
                 
                 var roleCheckPlayer = await _roleManager.RoleExistsAsync("Player");
                 var roleCheckAdmin = await _roleManager.RoleExistsAsync("Admin");
