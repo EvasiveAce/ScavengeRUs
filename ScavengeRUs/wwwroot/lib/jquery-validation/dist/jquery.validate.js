@@ -6,6 +6,9 @@
  * Copyright (c) 2017 Jörn Zaefferer
  * Released under the MIT license
  */
+
+//This does nothing currently validation is done in Registration.cshtml and  ApplicationUser.cs
+//this would be great if implemented good luck we found it this way and we are warningso you don't waste time trying to get this to work without realizing it
 (function( factory ) {
 	if ( typeof define === "function" && define.amd ) {
 		define( ["jquery"], factory );
@@ -366,6 +369,8 @@ $.extend( $.validator, {
 		$.extend( $.validator.defaults, settings );
 	},
 
+
+	//None of these are used
 	messages: {
 		required: "This field is required.",
 		remote: "Please fix this field.",
