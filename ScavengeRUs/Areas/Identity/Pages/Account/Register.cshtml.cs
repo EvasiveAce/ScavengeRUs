@@ -19,6 +19,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using ScavengeRUs.Models.Entities;
+using System.Text.RegularExpressions;
+using ScavengeRUs.Models.Enums;
+
 
 
 namespace ScavengeRUs.Areas.Identity.Pages.Account
@@ -93,6 +96,9 @@ namespace ScavengeRUs.Areas.Identity.Pages.Account
             public string LastName { get; set; } = String.Empty;
 
             [Required]
+            [Phone]
+            [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+                   ErrorMessage = "Phone number is not valid.")]
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; } = String.Empty;
 
@@ -114,6 +120,11 @@ namespace ScavengeRUs.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+             [Required]
+            [EnumDataType(typeof(Carriers))]
+            [Display(Name = "Carrier")]
+            public string Carrier { get; set; } = String.Empty;
         }
 
 
@@ -132,7 +143,7 @@ namespace ScavengeRUs.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                user.PhoneNumber = Input.PhoneNumber;
+                user.Carrier = Enum.Parse<Carriers>(Input.Carrier);
                 
                 var roleCheckPlayer = await _roleManager.RoleExistsAsync("Player");
                 var roleCheckAdmin = await _roleManager.RoleExistsAsync("Admin");

@@ -6,6 +6,9 @@
  * Copyright (c) 2017 Jörn Zaefferer
  * Released under the MIT license
  */
+
+//This does nothing currently validation is done in Registration.cshtml and  ApplicationUser.cs
+//this would be great if implemented good luck we found it this way and we are warningso you don't waste time trying to get this to work without realizing it
 (function( factory ) {
 	if ( typeof define === "function" && define.amd ) {
 		define( ["jquery"], factory );
@@ -140,9 +143,12 @@ $.extend( $.fn, {
 	},
 
 	// https://jqueryvalidation.org/rules/
-	rules: function( command, argument ) {
+	rules: function (command, argument) {
+		
 		var element = this[ 0 ],
 			settings, staticRules, existingRules, data, param, filtered;
+
+		
 
 		// If nothing is selected, return empty object; can't chain anyway
 		if ( element == null ) {
@@ -187,6 +193,8 @@ $.extend( $.fn, {
 			}
 		}
 
+		
+
 		data = $.validator.normalizeRules(
 		$.extend(
 			{},
@@ -194,7 +202,9 @@ $.extend( $.fn, {
 			$.validator.attributeRules( element ),
 			$.validator.dataRules( element ),
 			$.validator.staticRules( element )
-		), element );
+			), element);
+
+
 
 		// Make sure required is at front
 		if ( data.required ) {
@@ -359,10 +369,13 @@ $.extend( $.validator, {
 		$.extend( $.validator.defaults, settings );
 	},
 
+
+	//None of these are used
 	messages: {
 		required: "This field is required.",
 		remote: "Please fix this field.",
 		email: "Please enter a valid email address.",
+		phoneNumber: "Please enter a valid phone number",
 		url: "Please enter a valid URL.",
 		date: "Please enter a valid date.",
 		dateISO: "Please enter a valid date (ISO).",
@@ -375,7 +388,8 @@ $.extend( $.validator, {
 		range: $.validator.format( "Please enter a value between {0} and {1}." ),
 		max: $.validator.format( "Please enter a value less than or equal to {0}." ),
 		min: $.validator.format( "Please enter a value greater than or equal to {0}." ),
-		step: $.validator.format( "Please enter a multiple of {0}." )
+		step: $.validator.format("Please enter a multiple of {0}."),
+		
 	},
 
 	autoCreateRanges: false,
@@ -427,7 +441,7 @@ $.extend( $.validator, {
 			$( this.currentForm )
 				.on( "focusin.validate focusout.validate keyup.validate",
 					":text, [type='password'], [type='file'], select, textarea, [type='number'], [type='search'], " +
-					"[type='tel'], [type='url'], [type='email'], [type='datetime'], [type='date'], [type='month'], " +
+					"[type='tel'], [type='url'], [type='email'],[type='datetime'], [type='date'], [type='month'], " +
 					"[type='week'], [type='time'], [type='datetime-local'], [type='range'], [type='color'], " +
 					"[type='radio'], [type='checkbox'], [contenteditable], [type='button']", delegate )
 
@@ -1150,6 +1164,7 @@ $.extend( $.validator, {
 	classRuleSettings: {
 		required: { required: true },
 		email: { email: true },
+		phoneNumber: {phoneUS: true},
 		url: { url: true },
 		date: { date: true },
 		dateISO: { dateISO: true },
@@ -1383,6 +1398,13 @@ $.extend( $.validator, {
 			// Or use custom methods to implement your own email validation
 			return this.optional( element ) || /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test( value );
 		},
+
+		phoneNumber: function (value, element) {
+			phoneNumber = phoneNumber.replace(/\s+/g, "");
+			return this.optional(element) || phoneNumber.length > 9 &&
+				phoneNumber.match(/^(\+?1-?)?(\([2-9]\d{2}\)|[2-9]\d{2})-?[2-9]\d{2}-?\d{4}$/);
+		},
+
 
 		// https://jqueryvalidation.org/url-method/
 		url: function( value, element ) {
