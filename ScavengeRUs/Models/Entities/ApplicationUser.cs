@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ScavengeRUs.Models.Enums;
+using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace ScavengeRUs.Models.Entities
 {
@@ -21,6 +23,12 @@ namespace ScavengeRUs.Models.Entities
         [StringLength(50)]
         [Required]
         public string? LastName { get; set; }
+        [Phone]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$",
+                   ErrorMessage = "Phone number is not valid.")]
+        [DisplayName("Phone Number")]
+        [Required(IsUnique = true)]
+        override public string? PhoneNumber { get; set; }
         public AccessCode? AccessCode { get; set; }
         [DisplayName("Registered Hunt")]
         public Hunt? Hunt{ get; set; }

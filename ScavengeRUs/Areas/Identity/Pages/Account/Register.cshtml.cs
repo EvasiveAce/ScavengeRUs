@@ -137,7 +137,6 @@ namespace ScavengeRUs.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                user.PhoneNumber = Input.PhoneNumber;
                 
                 var roleCheckPlayer = await _roleManager.RoleExistsAsync("Player");
                 var roleCheckAdmin = await _roleManager.RoleExistsAsync("Admin");
