@@ -1,6 +1,6 @@
 ## BucHunt
 # Tips from the Fall 2023 Software Engineering I Team
-https://docs.google.com/spreadsheets/d/11N1r6txDRP5caCZhy7GKY4SirUB0QE8r8Ph1BgEpLCw/edit#gid=588308491
+https://docs.google.com/spreadsheets/d/11N1r6txDRP5caCZhy7GKY4SirUB0QE8r8Ph1BgEpLCw/edit?usp=sharing
 
 Take a look through the Sprints, as well as the Backlog. We mainly focused on getting the Admin requirements done, rather than any of the player specific ones.
 https://discord.gg/eWkNfKMNzj has people from Fall 2023, as well as Spring 2023. Join to ask any questions regarding anything.
